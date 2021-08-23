@@ -121,7 +121,7 @@ namespace Intruder.Tools
 				GUILayout.Label( $"<size=14><b>{Local.Username}</b></size>\nFollowers: {Local.Followers}", Styles.Text, GUILayout.ExpandHeight( true ) );
 				if ( GUILayout.Button( Local.Avatar, GUILayout.Height( 64 ), GUILayout.Width( 64 ) ) )
 				{
-					Application.OpenURL( $"https://steamcommunity.com/profiles/{Local.SteamId}/myworkshopfiles/?appid=518150" );
+					Application.OpenURL( $"steam://openurl/https://steamcommunity.com/profiles/{Local.SteamId}/myworkshopfiles/?appid=518150" );
 				}
 			}
 		}

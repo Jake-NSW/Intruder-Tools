@@ -231,7 +231,7 @@ namespace Intruder.Tools
 					{
 						if ( GUILayout.Button( "View", GUILayout.Width( 96 ), GUILayout.Height( 20 ) ) )
 						{
-							Application.OpenURL( activeItem?.Url );
+							Application.OpenURL( "steam://openurl/" + activeItem?.Url );
 						}
 					}
 				}
