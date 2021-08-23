@@ -98,8 +98,8 @@ namespace Intruder.Tools
 		{
 			public static void Precache()
 			{
-				IntruderBanner = AssetDatabase.LoadAssetAtPath<Texture2D>( "Assets/Intruder-Tools/Editor/Materials/Editor/logo_wide.png" );
-				DefaultThumbnail = AssetDatabase.LoadAssetAtPath<Texture2D>( "Assets/Intruder-Tools/Editor/Materials/Editor/default_thumbnail.png" );
+				IntruderBanner = AssetDatabase.LoadAssetAtPath<Texture2D>( AssetDatabase.GUIDToAssetPath( "35dc69cfb37103c45b283015925ed9bd" ) );
+				DefaultThumbnail = AssetDatabase.LoadAssetAtPath<Texture2D>( AssetDatabase.GUIDToAssetPath( "37dc8cac11054e642b8bebb42ec7a17c" ) );
 			}
 
 			public static Texture2D IntruderBanner;
