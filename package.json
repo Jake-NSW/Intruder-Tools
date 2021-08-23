@@ -1,0 +1,17 @@
+{
+  "name": "com.superboss.intruder-tools",
+  "version": "0.0.1",
+  "displayName": "Intruder Tools",
+  "description": "",
+  "documentationUrl": "",
+  "changelogUrl": "",
+  "licensesUrl": "",
+  "keywords": [
+    "Tools"
+  ],
+  "author": {
+    "name": "",
+    "email": "",
+    "url": ""
+  }
+}

@@ -1,0 +1,20 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+
+namespace Intruder.Tools
+{
+	[CustomTool( "Content Tester", Title = "Content Testing", Description = "Test maps, skins and launch Intruder", Priority = 0 )]
+	public class ContentTest : Tool
+	{
+		public override void InspectorGUI()
+		{
+			EditorGUI.BeginDisabledGroup( true );
+			{
+				EditorGUILayout.TextField( Steamworks.SteamApps.AppInstallDir() );
+			}
+			EditorGUI.EndDisabledGroup();
+		}
+	}
+}
