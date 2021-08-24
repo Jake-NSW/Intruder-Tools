@@ -8,22 +8,24 @@ using UnityEditor.IMGUI.Controls;
 
 namespace Intruder.Tools.Steamworks
 {
-	[CustomTool( "Steam Uploader", Title = "Workshop Uploader", Description = "Use this tool to update your workshop items and update item thumbnails", Tooltip = "Upload your Content!", Priority = -100 )]
+	[CustomTool( "Steam Uploader", Title = "Workshop Uploader", Description = "Use this tool to update your workshop items and update item thumbnails", Tooltip = "Upload your Content!", HasOptions = true, Priority = -100 )]
 	public class WorkshopUploader : Tool
 	{
-		private Item? activeItem;
+		public static WorkshopUploader current;
+		public static Item? activeItem;
 
 		private string cachedThumbnailPath;
 		private Texture2D cachedThumbnail;
 		private string cachedName;
 		private string cachedChangelog;
-		private DefaultAsset cachedAsset;
+		public DefaultAsset cachedAsset;
 
 		private static bool uploadGroupFoldout = true;
 		private static bool statsGroupFoldout;
 
 		public WorkshopUploader()
 		{
+			current = this;
 			GetDefaultThumbnail();
 		}
 
@@ -59,9 +61,38 @@ namespace Intruder.Tools.Steamworks
 			}
 		}
 
+		public override void OptionsGUI()
+		{
+			if ( GUILayout.Button( "Refresh Workshop Items" ) )
+			{
+				Workshop.RefreshClientItems();
+			}
+		}
+
 		//-------------------------------------------------------------//
 		// Workshop Upload / Update GUI
 		//-------------------------------------------------------------//
+		public void SelectItem( Item item )
+		{
+			// Return if selecting the same item
+			if ( activeItem?.Id == item.Id )
+				return;
+
+			activeItem = item;
+			cachedName = item.Title;
+			cachedThumbnailPath = null;
+			GetItemThumbnail( item );
+			Window.current.Repaint();
+		}
+
+		public void RemoveActiveItem()
+		{
+			activeItem = null;
+			cachedName = string.Empty;
+			GetDefaultThumbnail();
+			Window.current.Repaint();
+		}
+
 		private void UploadItemGUI()
 		{
 			// Item Meta
@@ -110,10 +141,14 @@ namespace Intruder.Tools.Steamworks
 					// Update thumbnail
 					if ( activeItem != null )
 					{
-						if ( GUILayout.Button( "Update Thumbnail!" ) )
+						EditorGUI.BeginDisabledGroup( string.IsNullOrEmpty( cachedThumbnailPath ) );
 						{
-							Workshop.UpdateThumbnail( activeItem.Value, cachedThumbnailPath );
+							if ( GUILayout.Button( "Update Thumbnail!" ) )
+							{
+								Workshop.UpdateThumbnail( activeItem.Value, cachedThumbnailPath );
+							}
 						}
+						EditorGUI.EndDisabledGroup();
 					}
 				}
 			}
@@ -195,21 +230,11 @@ namespace Intruder.Tools.Steamworks
 				if ( item.id != -1 )
 				{
 					var workshopItem = Workshop.ClientItems[item.id];
-
-					// Return if selecting the same item
-					if ( activeUploader.activeItem?.Id == workshopItem.Id )
-						return;
-
-					activeUploader.activeItem = workshopItem;
-					activeUploader.cachedName = workshopItem.Title;
-					activeUploader.cachedThumbnailPath = null;
-					activeUploader.GetItemThumbnail( workshopItem );
+					activeUploader.SelectItem( workshopItem );
 				}
 				else
 				{
-					activeUploader.cachedName = string.Empty;
-					activeUploader.activeItem = null;
-					activeUploader.GetDefaultThumbnail();
+					activeUploader.RemoveActiveItem();
 				}
 			}
 

@@ -41,6 +41,11 @@ namespace Intruder.Tools
 			GrabTools();
 		}
 
+		private void OnEnable()
+		{
+			current = this;
+		}
+
 		//-------------------------------------------------------------//
 		// Tools Grabber / Creator
 		//-------------------------------------------------------------//
@@ -77,7 +82,6 @@ namespace Intruder.Tools
 					newTool.Icon = AssetDatabase.LoadAssetAtPath<Texture2D>( EditorGUIUtility.isProSkin ? customToolAttribute.DarkThemeIcon : customToolAttribute.LightThemeIcon );
 
 				newTool.Tooltip = customToolAttribute.Tooltip;
-
 				// Add to the list of tools 
 				cachedTools.Add( newTool );
 			}
