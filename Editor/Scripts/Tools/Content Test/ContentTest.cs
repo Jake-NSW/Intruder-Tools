@@ -10,6 +10,7 @@ namespace Intruder.Tools
 	{
 		public override void InspectorGUI()
 		{
+			GUILayout.Label( "Install Path:" );
 			EditorGUI.BeginDisabledGroup( true );
 			{
 				EditorGUILayout.TextField( Steamworks.SteamApps.AppInstallDir() );

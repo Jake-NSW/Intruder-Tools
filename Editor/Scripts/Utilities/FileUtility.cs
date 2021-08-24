@@ -10,6 +10,11 @@ namespace Intruder.Tools
 				Directory.CreateDirectory( path );
 		}
 
+		public static float GetFileSize( string path )
+		{
+			return new FileInfo( path ).Length;
+		}
+
 		public static void DeleteAllFilesWithExtensionAtPath( string path, string extension )
 		{
 			foreach ( var item in Directory.GetFiles( Path.GetFullPath( path ), $"*.{extension}" ) )

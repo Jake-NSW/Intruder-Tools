@@ -55,6 +55,18 @@ namespace Intruder.Tools
 			Workshop.ClientItems = workshopItems.Result?.Entries.ToList();
 		}
 
+		public static async void GetAndCacheAvatar()
+		{
+			var avatar = await GetAvatar();
+			Local.Avatar = avatar?.Covert();
+		}
+
+		public static async void RefreshClientItems()
+		{
+			var workshopItems = await GetWorkshopItems();
+			Workshop.ClientItems = workshopItems?.Entries.ToList();
+		}
+
 		private static async Task<Image?> GetAvatar()
 		{
 			try
@@ -199,16 +211,17 @@ namespace Intruder.Tools
 								else
 									Workshop.UpdateItem( path, activeItem.Value, cachedChangelog );
 							}
-
-							if ( activeItem != null )
-							{
-								if ( GUILayout.Button( "Update Thumbnail!" ) )
-								{
-									// UPDATE THUMBNAIL LOGIC
-								}
-							}
 						}
 						EditorGUI.EndDisabledGroup();
+
+						// Update thumbnail
+						if ( activeItem != null )
+						{
+							if ( GUILayout.Button( "Update Thumbnail!" ) )
+							{
+								Workshop.UpdateThumbnail( activeItem.Value, cachedThumbnailPath );
+							}
+						}
 					}
 				}
 			}

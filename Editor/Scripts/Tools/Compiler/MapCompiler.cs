@@ -91,7 +91,7 @@ namespace Intruder.Tools
 			var level = AssetImporter.GetAtPath( "Assets/Level1.unity" );
 
 			// Check if the dir is there and export level
-			FileUtility.DirectoryCheck( $"Assets/Exports/{scene.name}/" );
+			FileUtility.DirectoryCheck( $"Exports/Maps/{scene.name}/" );
 
 			// For each target build, build
 			foreach ( var item in buildTargets )
@@ -100,20 +100,22 @@ namespace Intruder.Tools
 				// IntruderUtility.ClearAllAssetBundleNames();
 
 				level.assetBundleName = "map.ilf" + (item == BuildTarget.StandaloneWindows64 ? "w" : "m");
-				BuildPipeline.BuildAssetBundles( $"Assets/Exports/{scene.name}/", BuildAssetBundleOptions.ChunkBasedCompression, item );
+				BuildPipeline.BuildAssetBundles( $"Exports/Maps/{scene.name}/", BuildAssetBundleOptions.ChunkBasedCompression, item );
 
 				// Clear asset bundles again so they cant stuff up next export somehow
 				// IntruderUtility.ClearAllAssetBundleNames();
 			}
 
 			// Delete crap files
-			FileUtility.DeleteAllFilesWithExtensionAtPath( $"Assets/Exports/{scene.name}/", "manifest" );
-			FileUtility.DeleteAllFilesWithExtensionAtPath( $"Assets/Exports/{scene.name}/", "" );
+			FileUtility.DeleteAllFilesWithExtensionAtPath( $"Exports/Maps/{scene.name}/", "manifest" );
+			FileUtility.DeleteAllFilesWithExtensionAtPath( $"Exports/Maps/{scene.name}/", "" );
 
 			File.Delete( Path.GetFullPath( "Assets/Level1.unity" ) );
 			AssetDatabase.Refresh();
 
-			postCompile?.Invoke( $"Assets/Exports/{scene.name}/map.ilf" );
+			// I have to do this for some dumbass reason?
+			Steam.GetAndCacheAvatar();
+			postCompile?.Invoke( $"Exports/Maps/{scene.name}/map.ilf" );
 
 			return true;
 		}
