@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
 public class TuningProxy : MonoBehaviour
@@ -8,7 +9,7 @@ public class TuningProxy : MonoBehaviour
 
 	public void CheckJSON()
 	{
-		string escName = WWW.EscapeURL(tuningParameters);
+		string escName = UnityWebRequest.EscapeURL(tuningParameters);
 		escName = escName.Replace("+", "%20");
 		Application.OpenURL("https://jsonlint.com/?json=" + escName);
 	}
