@@ -51,23 +51,34 @@ namespace Intruder.Tools.Testing
 		//-------------------------------------------------------------//
 		private void QuickCommandsGUI()
 		{
-			if ( GUILayout.Button( "Quick Launch Intruder", GUILayout.Height( 24 ) ) )
+			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
 			{
-				ContentTest.LaunchIntruder();
-			}
-
-			var newScene = string.IsNullOrEmpty( EditorSceneManager.GetActiveScene().name );
-			EditorGUI.BeginDisabledGroup( newScene );
-			{
-				if ( GUILayout.Button( new GUIContent( "Open Scene In Game", newScene ? "Must save the scene" : "" ), GUILayout.Height( 24 ) ) )
+				if ( GUILayout.Button( "Quick Launch Intruder", GUILayout.Height( 24 ) ) )
 				{
-					if ( Directory.Exists( Path.GetFullPath( $"Exports/Maps/{EditorSceneManager.GetActiveScene().name}/" ) ) )
-						ContentTest.LaunchIntruder( ContentTest.LoadLevelArgs( $"Exports/Maps/{EditorSceneManager.GetActiveScene().name}/" ) );
-					else
-						EditorUtility.DisplayDialog( "Load Level Error", "This scene hasn't been compiled yet", "Okay" );
+					ContentTest.LaunchIntruder();
+				}
+
+				if ( GUILayout.Button( "Goto Intruder Install Dir", GUILayout.Height( 24 ) ) )
+				{
+					ContentTest.GoToInstallPath();
 				}
 			}
-			EditorGUI.EndDisabledGroup();
+
+			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
+			{
+				var newScene = string.IsNullOrEmpty( EditorSceneManager.GetActiveScene().name );
+				EditorGUI.BeginDisabledGroup( newScene );
+				{
+					if ( GUILayout.Button( new GUIContent( "Open Scene In Game", newScene ? "Must save the scene" : "" ), GUILayout.Height( 24 ) ) )
+					{
+						if ( Directory.Exists( Path.GetFullPath( $"Exports/Maps/{EditorSceneManager.GetActiveScene().name}/" ) ) )
+							ContentTest.LaunchIntruder( ContentTest.LoadLevelArgs( $"Exports/Maps/{EditorSceneManager.GetActiveScene().name}/" ) );
+						else
+							EditorUtility.DisplayDialog( "Load Level Error", "This scene hasn't been compiled yet", "Okay" );
+					}
+				}
+				EditorGUI.EndDisabledGroup();
+			}
 		}
 
 		//-------------------------------------------------------------//

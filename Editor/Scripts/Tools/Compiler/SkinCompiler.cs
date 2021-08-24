@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Intruder.Tools.Compiling
 {
-	[CustomTool( "Skin Creator", Description = "This tool allows you to export skins, plus make templates for them.", Tooltip = "Make Custom Skins" )]
+	// [CustomTool( "Skin Creator", Description = "This tool allows you to export skins, plus make templates for them.", Tooltip = "Make Custom Skins" )]
 	public class SkinCompiler : Compiler
 	{
 		

@@ -59,7 +59,7 @@ namespace Intruder.Tools
 		{
 			fontSize = 12,
 			imagePosition = ImagePosition.ImageOnly,
-			padding = new RectOffset( 8, 8, 8, 8 ),
+			padding = new RectOffset( 12, 12, 12, 12 ),
 		};
 
 		public static readonly GUIStyle Underline = new GUIStyle( GUI.skin.horizontalSlider )

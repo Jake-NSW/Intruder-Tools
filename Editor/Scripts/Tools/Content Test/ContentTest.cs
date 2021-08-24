@@ -27,6 +27,17 @@ namespace Intruder.Tools.Testing
 			Application.OpenURL( $"steam://rungameid/{Global.AppId}" );
 		}
 
+		public static void GoToInstallPath()
+		{
+			ProcessStartInfo startInfo = new ProcessStartInfo
+			{
+				Arguments = SteamApps.AppInstallDir(),
+				FileName = "explorer.exe"
+			};
+
+			Process.Start( startInfo );
+		}
+
 		public static string LoadLevelArgs( string path )
 		{
 			switch ( Application.platform )

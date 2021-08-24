@@ -14,7 +14,7 @@ using Intruder.Tools.Testing;
 
 namespace Intruder.Tools.Compiling
 {
-	[CustomTool( "Map Compiler", Title = "Map Compiler", Description = "This tool allows you to export maps, quickly make new maps and more.", Tooltip = "Make Custom Maps", HasOptions = true )]
+	[CustomTool( "Map Compiler", Title = "Map Compiler", Description = "This tool allows you to export maps, quickly make new maps and more.", Tooltip = "Make Custom Maps" )]
 	public class MapCompiler : Compiler
 	{
 		//-------------------------------------------------------------//
@@ -52,19 +52,9 @@ namespace Intruder.Tools.Compiling
 		{
 			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
 			{
-				if ( GUILayout.Button( "Compile Active Scene" ) )
+				if ( GUILayout.Button( "Compile and Test Active Scene", GUILayout.Height( 24 ) ) )
 					CompileOpenScene();
 			}
-		}
-
-		//-------------------------------------------------------------//
-		// Options GUI
-		//-------------------------------------------------------------//
-		public override void OptionsGUI()
-		{
-			base.OptionsGUI();
-
-			GUILayout.Label( "Awesome" );
 		}
 
 		//-------------------------------------------------------------//
