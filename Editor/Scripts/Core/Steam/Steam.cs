@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using Steamworks;
 using Steamworks.Data;
 using Steamworks.Ugc;
@@ -19,6 +20,11 @@ namespace Intruder.Tools.Steamworks
 			if ( SteamClient.IsValid )
 			{
 				PreCache();
+
+				// I have to do this? Or else it'll just disappear? why why why???
+				// You'd think i would have to do this on every other GUI image...
+				// but no only on the avatar cause unity doesnt like steam avatars
+				EditorSceneManager.sceneOpened += ( e, d ) => GetAndCacheAvatar();
 			}
 			else
 				Debug.LogError( "Steam Client not valid" );

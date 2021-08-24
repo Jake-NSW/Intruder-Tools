@@ -1,7 +1,9 @@
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using Steamworks;
 
 namespace Intruder.Tools.Testing
@@ -53,6 +55,19 @@ namespace Intruder.Tools.Testing
 			{
 				ContentTest.LaunchIntruder();
 			}
+
+			var newScene = string.IsNullOrEmpty( EditorSceneManager.GetActiveScene().name );
+			EditorGUI.BeginDisabledGroup( newScene );
+			{
+				if ( GUILayout.Button( new GUIContent( "Open Scene In Game", newScene ? "Must save the scene" : "" ), GUILayout.Height( 24 ) ) )
+				{
+					if ( Directory.Exists( Path.GetFullPath( $"Exports/Maps/{EditorSceneManager.GetActiveScene().name}/" ) ) )
+						ContentTest.LaunchIntruder( ContentTest.LoadLevelArgs( $"Exports/Maps/{EditorSceneManager.GetActiveScene().name}/" ) );
+					else
+						EditorUtility.DisplayDialog( "Load Level Error", "This scene hasn't been compiled yet", "Okay" );
+				}
+			}
+			EditorGUI.EndDisabledGroup();
 		}
 
 		//-------------------------------------------------------------//
