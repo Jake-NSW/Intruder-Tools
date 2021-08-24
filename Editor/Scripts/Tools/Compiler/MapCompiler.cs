@@ -95,13 +95,19 @@ namespace Intruder.Tools
 			FileUtility.DirectoryCheck( $"Exports/Maps/{scene.name}/" );
 
 			// For each target build, build
-			foreach ( var item in buildTargets )
+			foreach ( var target in buildTargets )
 			{
 				// Clear asset bundles so it doesnt build with map
 				// IntruderUtility.ClearAllAssetBundleNames();
 
-				level.assetBundleName = "map.ilf" + (item == BuildTarget.StandaloneWindows64 ? "w" : "m");
-				BuildPipeline.BuildAssetBundles( $"Exports/Maps/{scene.name}/", BuildAssetBundleOptions.ChunkBasedCompression, item );
+				level.assetBundleName = "map.ilf" + (target == BuildTarget.StandaloneWindows64 ? "w" : "m");
+				var bundle = BuildPipeline.BuildAssetBundles( $"Exports/Maps/{scene.name}/", BuildAssetBundleOptions.ChunkBasedCompression, target );
+
+				if ( bundle == null )
+				{
+					EditorUtility.DisplayDialog( "ERROR", $"Map asset bundle compile failed. {target.ToString()}", "Okay" );
+					Debug.LogError( "Compile Failed" );
+				}
 
 				// Clear asset bundles again so they cant stuff up next export somehow
 				// IntruderUtility.ClearAllAssetBundleNames();
@@ -117,6 +123,8 @@ namespace Intruder.Tools
 			// I have to do this for some dumbass reason?
 			Steam.GetAndCacheAvatar();
 			postCompile?.Invoke( $"Exports/Maps/{scene.name}/map.ilf" );
+
+			EditorUtility.DisplayDialog( "Compile Finish", $"{scene.name} has finished compiling.", "Okay" );
 
 			return true;
 		}
