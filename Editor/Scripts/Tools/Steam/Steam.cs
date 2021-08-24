@@ -265,8 +265,16 @@ namespace Intruder.Tools
 			private void CacheThumbnail()
 			{
 				var path = EditorUtility.OpenFilePanel( "New Thumbnail Image", Application.dataPath, "png" );
+
 				if ( string.IsNullOrEmpty( path ) )
 					return;
+
+				// If thumbnail is over 3mb then return
+				if ( FileUtility.IsOverSize( path, FileSize.Megabytes, 3 ) )
+				{
+					EditorUtility.DisplayDialog( "Warning", "Steam does not allow for thumbnails to be over 3mb in file size", "Okay" );
+					return;
+				}
 
 				cachedThumbnailPath = path;
 				cachedThumbnail = new Texture2D( 4, 4 );
