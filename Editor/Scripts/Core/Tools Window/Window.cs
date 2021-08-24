@@ -18,10 +18,16 @@ namespace Intruder.Tools
 		public static Window current;
 		public static readonly GUIContent WindowTitle = new GUIContent( "Intruder Tools" );
 
+		private static int SavedIndex
+		{
+			get => EditorPrefs.GetInt( "Intruder.Tools.Window.Index", 0 );
+			set => EditorPrefs.SetInt( "Intruder.Tools.Window.Index", value );
+		}
+
 		//-------------------------------------------------------------//
 		// Entry Point
 		//-------------------------------------------------------------//
-		[MenuItem( "Intruder Tools/Tools Window" )]
+		[MenuItem( "Intruder Tools/Tools Window", priority = -100 )]
 		public static void OpenWindow()
 		{
 			var window = EditorWindow.GetWindow<Window>();
@@ -39,6 +45,7 @@ namespace Intruder.Tools
 		{
 			Icons.Precache();
 			GrabTools();
+			activeTool = cachedTools[SavedIndex];
 		}
 
 		private void OnEnable()
@@ -195,6 +202,7 @@ namespace Intruder.Tools
 			if ( GUILayout.Button( new GUIContent( tool.Name, tool.Icon, tool.Tooltip ), tool.Icon ? Styles.ToolsImageButton : Styles.ToolsButton, GUILayout.Height( height ), GUILayout.MinWidth( 64 ) ) )
 			{
 				activeTool = tool;
+				SavedIndex = cachedTools.IndexOf( tool );
 				tool.OnSelect();
 			}
 

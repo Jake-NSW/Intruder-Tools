@@ -53,6 +53,9 @@ namespace Intruder.Tools.Compiling
 			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
 			{
 				if ( GUILayout.Button( "Compile and Test Active Scene", GUILayout.Height( 24 ) ) )
+					CompileAndLaunchOpenScene();
+
+				if ( GUILayout.Button( "Compile Active Scene", GUILayout.Height( 24 ) ) )
 					CompileOpenScene();
 			}
 		}
@@ -60,11 +63,18 @@ namespace Intruder.Tools.Compiling
 		//-------------------------------------------------------------//
 		// Menu Items
 		//-------------------------------------------------------------//
-		[MenuItem( "Intruder Tools/Compile and Launch Map _%i" )]
-		public static void CompileOpenScene()
+		[MenuItem( "Intruder Tools/Maps/Compile and Launch Map _%i", priority = -5 )]
+		public static void CompileAndLaunchOpenScene()
 		{
 			GetBuildTarget( SystemInfo.operatingSystemFamily.ToString(), out var buildTarget );
 			CompileLevel( EditorSceneManager.GetActiveScene(), buildTarget, ( path ) => ContentTest.LaunchIntruder( ContentTest.LoadLevelArgs( path ) ) );
+		}
+
+		[MenuItem( "Intruder Tools/Maps/Compile Map", priority = 5 )]
+		public static void CompileOpenScene()
+		{
+			GetBuildTarget( SystemInfo.operatingSystemFamily.ToString(), out var buildTarget );
+			CompileLevel( EditorSceneManager.GetActiveScene(), buildTarget );
 		}
 
 		//-------------------------------------------------------------//
