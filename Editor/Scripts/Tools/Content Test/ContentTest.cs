@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Steamworks;
 
 namespace Intruder.Tools
 {
@@ -13,7 +14,7 @@ namespace Intruder.Tools
 			GUILayout.Label( "Install Path:" );
 			EditorGUI.BeginDisabledGroup( true );
 			{
-				EditorGUILayout.TextField( Steamworks.SteamApps.AppInstallDir() );
+				EditorGUILayout.TextField( SteamApps.AppInstallDir() );
 			}
 			EditorGUI.EndDisabledGroup();
 		}
