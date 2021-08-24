@@ -16,12 +16,15 @@ namespace Intruder.Tools.Testing
 
 		public override void InspectorGUI()
 		{
-			GUILayout.Label( "Install Path:" );
-			EditorGUI.BeginDisabledGroup( true );
+			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
 			{
-				EditorGUILayout.TextField( SteamApps.AppInstallDir() );
+				GUILayout.Label( "Install Path:" );
+				EditorGUI.BeginDisabledGroup( true );
+				{
+					EditorGUILayout.TextField( SteamApps.AppInstallDir() );
+				}
+				EditorGUI.EndDisabledGroup();
 			}
-			EditorGUI.EndDisabledGroup();
 
 			// Quick Commands
 			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )

@@ -114,7 +114,7 @@ namespace Intruder.Tools.Compiling
 
 				EditorGUI.BeginDisabledGroup( cachedMap == null );
 				{
-					if ( GUILayout.Button( new GUIContent( "Compile Map" ), GUILayout.Height( 32 ) ) )
+					if ( GUILayout.Button( new GUIContent( "Compile Map", EditorGUIUtility.IconContent( "d_Settings" ).image ), GUILayout.Height( 32 ) ) )
 					{
 						Action<string> postBuild = ( path ) => { };
 
