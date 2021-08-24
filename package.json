@@ -2,7 +2,7 @@
   "name": "com.superboss.intruder-tools",
   "version": "0.0.1",
   "displayName": "Intruder Tools",
-  "description": "",
+  "description": "Create content for Intruder",
   "documentationUrl": "",
   "changelogUrl": "",
   "licensesUrl": "",
@@ -10,8 +10,8 @@
     "Tools"
   ],
   "author": {
-    "name": "",
+    "name": "Superboss Games",
     "email": "",
-    "url": ""
+    "url": "https://intruderfps.com"
   }
 }
