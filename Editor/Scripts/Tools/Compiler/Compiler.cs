@@ -6,7 +6,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Intruder.Tools
+namespace Intruder.Tools.Compiling
 {
 	// Abstract class just in case
 	public abstract class Compiler : Tool

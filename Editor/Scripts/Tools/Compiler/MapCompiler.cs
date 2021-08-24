@@ -10,8 +10,9 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using Intruder.Tools.Steamworks;
+using Intruder.Tools.Testing;
 
-namespace Intruder.Tools
+namespace Intruder.Tools.Compiling
 {
 	[CustomTool( "Map Compiler", Title = "Map Compiler", Description = "This tool allows you to export maps, quickly make new maps and more.", Tooltip = "Make Custom Maps", HasOptions = true )]
 	public class MapCompiler : Compiler
@@ -69,11 +70,11 @@ namespace Intruder.Tools
 		//-------------------------------------------------------------//
 		// Menu Items
 		//-------------------------------------------------------------//
-		[MenuItem( "Intruder Tools/Compile Open Scene _%i" )]
+		[MenuItem( "Intruder Tools/Compile and Launch Map _%i" )]
 		public static void CompileOpenScene()
 		{
 			GetBuildTarget( SystemInfo.operatingSystemFamily.ToString(), out var buildTarget );
-			CompileLevel( EditorSceneManager.GetActiveScene(), buildTarget );
+			CompileLevel( EditorSceneManager.GetActiveScene(), buildTarget, ( path ) => ContentTest.LaunchIntruder( ContentTest.LoadLevelArgs( path ) ) );
 		}
 
 		//-------------------------------------------------------------//
@@ -122,7 +123,7 @@ namespace Intruder.Tools
 
 			// I have to do this for some dumbass reason?
 			Steam.GetAndCacheAvatar();
-			postCompile?.Invoke( $"Exports/Maps/{scene.name}/map.ilf" );
+			postCompile?.Invoke( $"Exports/Maps/{scene.name}/" );
 
 			EditorUtility.DisplayDialog( "Compile Finish", $"{scene.name} has finished compiling.", "Okay" );
 
