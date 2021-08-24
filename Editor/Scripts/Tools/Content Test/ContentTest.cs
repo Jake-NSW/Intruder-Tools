@@ -1,22 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using System.Diagnostics;
 using UnityEngine;
-using UnityEditor;
 using Steamworks;
 
-namespace Intruder.Tools
+namespace Intruder.Tools.Testing
 {
-	[CustomTool( "Content Tester", Title = "Content Testing", Description = "Test maps, skins and launch Intruder", Priority = 0 )]
-	public class ContentTest : Tool
+	public class ContentTest
 	{
-		public override void InspectorGUI()
+		public static Process LaunchIntruder( string launchArgs = "" )
 		{
-			GUILayout.Label( "Install Path:" );
-			EditorGUI.BeginDisabledGroup( true );
+			// Kills the current intruder process
+			foreach ( var item in Process.GetProcessesByName( "Intruder" ) )
+				item.Kill();
+
+			// Start Intruder
+			return Process.Start( SteamApps.AppInstallDir() + "/IntruderLauncher.exe", launchArgs );
+		}
+
+		public static void LaunchIntruderThroughSteam()
+		{
+			// Kills the current intruder process
+			foreach ( var item in Process.GetProcessesByName( "Intruder" ) )
+				item.Kill();
+
+			// Start Intruder
+			Application.OpenURL( $"steam://rungameid/{Global.AppId}" );
+		}
+
+		public static string LoadLevelArgs( string path )
+		{
+			switch ( Application.platform )
 			{
-				EditorGUILayout.TextField( SteamApps.AppInstallDir() );
+				case (RuntimePlatform.WindowsPlayer):
+				case (RuntimePlatform.WindowsEditor):
+					return $"loadlevel \"{path}/map.ilfw\"";
+
+				case (RuntimePlatform.OSXPlayer):
+				case (RuntimePlatform.OSXEditor):
+					return $"loadlevel \"{path}/map.ilfm\"";
+
+				default:
+					return "";
 			}
-			EditorGUI.EndDisabledGroup();
 		}
 	}
 }
