@@ -23,6 +23,13 @@ namespace Intruder.Tools.Compiling
 		private bool activeSceneCompileGroup = true;
 		private bool advancedCompileGroup = false;
 
+		private static SceneAsset cachedMap;
+
+		private static string[] buildTargets = new string[] { "Windows", "OSX", "Both" };
+		private static int buildTargetIndex;
+		private static bool cachedBeep;
+		private static bool cachedLoadInGame;
+
 		public override void InspectorGUI()
 		{
 			// Quick Compile
@@ -40,11 +47,11 @@ namespace Intruder.Tools.Compiling
 			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
 			{
 				// Foldout group
-				advancedCompileGroup = EditorGUILayout.BeginFoldoutHeaderGroup( advancedCompileGroup, " Advanced Compiler", Styles.FoldoutSubTitle );
+				advancedCompileGroup = EditorGUILayout.BeginFoldoutHeaderGroup( advancedCompileGroup, " Compiler", Styles.FoldoutSubTitle );
 				EditorGUILayout.EndFoldoutHeaderGroup();
 
 				if ( advancedCompileGroup )
-					GUILayout.Label( "soon" );
+					CompilerGUI();
 			}
 		}
 
@@ -58,6 +65,71 @@ namespace Intruder.Tools.Compiling
 				if ( GUILayout.Button( "Compile Active Scene", GUILayout.Height( 24 ) ) )
 					CompileOpenScene();
 			}
+		}
+
+		private void CompilerGUI()
+		{
+			GUILayout.BeginVertical( Styles.Panel );
+			{
+				GUILayout.Label( "Map To Export", Styles.SubTitle );
+				GUILayout.Space( 4 );
+				GUILayout.BeginHorizontal();
+				{
+					cachedMap = EditorGUILayout.ObjectField( cachedMap, typeof( SceneAsset ), false, GUILayout.Height( 32 ) ) as SceneAsset;
+					if ( GUILayout.Button( "Get Open Scene", GUILayout.Width( 128 ), GUILayout.Height( 32 ) ) )
+					{
+						cachedMap = AssetDatabase.LoadAssetAtPath<SceneAsset>( UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene().path );
+					}
+				}
+				GUILayout.EndHorizontal();
+			}
+			GUILayout.EndVertical();
+
+			GUILayout.BeginVertical( Styles.Panel );
+			{
+				GUILayout.Label( "Map Options", Styles.SubTitle );
+				GUILayout.Space( 4 );
+				EditorGUILayout.Toggle( new GUIContent( "Export Post Effects", "Disable this if compile times are slow" ), true );
+				EditorGUILayout.Toggle( "Do Sanity Check", true );
+
+				EditorGUILayout.Space();
+
+				buildTargetIndex = EditorGUILayout.Popup( "Build Target", buildTargetIndex, buildTargets );
+			}
+			GUILayout.EndVertical();
+
+			GUILayout.BeginVertical( Styles.Panel );
+			{
+				GUILayout.Label( "On Build Complete", Styles.SubTitle );
+				GUILayout.Space( 4 );
+				cachedBeep = EditorGUILayout.Toggle( "Beep on Finish", cachedBeep );
+				cachedLoadInGame = EditorGUILayout.Toggle( "Launch Map In Game", cachedLoadInGame );
+			}
+			GUILayout.EndVertical();
+
+			GUILayout.BeginVertical( Styles.Panel );
+			{
+				if ( cachedMap == null )
+					EditorGUILayout.HelpBox( "Need to add a map to compile!", MessageType.Error );
+
+				EditorGUI.BeginDisabledGroup( cachedMap == null );
+				{
+					if ( GUILayout.Button( new GUIContent( "Compile Map" ), GUILayout.Height( 32 ) ) )
+					{
+						Action<string> postBuild = ( path ) => { };
+
+						if ( cachedBeep )
+							postBuild += ( path ) => EditorApplication.Beep();
+						if ( cachedLoadInGame )
+							postBuild += ( path ) => ContentTest.LaunchIntruder( ContentTest.LoadLevelArgs( path ) );
+
+						GetBuildTarget( buildTargets[buildTargetIndex], out var target );
+						CompileLevel( UnityEngine.SceneManagement.SceneManager.GetSceneByPath( AssetDatabase.GetAssetPath( cachedMap ) ), target, postBuild );
+					}
+				}
+				EditorGUI.EndDisabledGroup();
+			}
+			GUILayout.EndVertical();
 		}
 
 		//-------------------------------------------------------------//
