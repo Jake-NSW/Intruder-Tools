@@ -105,8 +105,8 @@ namespace Intruder.Tools.Steamworks
 					ThumbnailPreviewGUI();
 					using ( new GUILayout.VerticalScope( GUILayout.ExpandHeight( true ) ) )
 					{
-						ToolGUI.GhostedTextField( ref cachedName, true, "Item Name", 12, GUILayout.Height( 26 ) );
-						ToolGUI.GhostedTextArea( ref cachedChangelog, true, "Item Changelog", 12, GUILayout.Height( 127 ) );
+						UtilityGUI.GhostedTextField( ref cachedName, true, "Item Name", 12, GUILayout.Height( 26 ) );
+						UtilityGUI.GhostedTextArea( ref cachedChangelog, true, "Item Changelog", 12, GUILayout.Height( 127 ) );
 					}
 				}
 			}

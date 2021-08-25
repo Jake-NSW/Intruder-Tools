@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace Intruder.Tools
 {
-	public class ToolGUI
+	public class UtilityGUI
 	{
 		public static void GhostedTextField( ref string text, bool allowSpaces = true, string ghostedText = "GameObject", float fontSize = 12, params GUILayoutOption[] options )
 		{

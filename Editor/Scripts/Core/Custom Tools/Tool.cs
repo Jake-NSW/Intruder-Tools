@@ -29,7 +29,7 @@ namespace Intruder.Tools
 		internal void InternalInspectorGUI()
 		{
 			GUILayout.Label( Title, Styles.Title );
-			ToolGUI.UnderlineGUI( 1 );
+			UtilityGUI.UnderlineGUI( 1 );
 
 			scrollPos = GUILayout.BeginScrollView( scrollPos, GUIStyle.none );
 			{

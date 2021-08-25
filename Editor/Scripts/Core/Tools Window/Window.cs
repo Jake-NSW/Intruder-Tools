@@ -74,7 +74,7 @@ namespace Intruder.Tools
 			{
 				// Get the attribute + create instance of tool
 				var customToolAttribute = item.GetCustomAttribute<CustomToolAttribute>();
-				var newTool = Activator.CreateInstance( item ) as Tool;
+				var newTool = System.Activator.CreateInstance( item ) as Tool;
 
 				newTool.Name = customToolAttribute.Name;
 				newTool.Priority = customToolAttribute.Priority;
@@ -164,7 +164,7 @@ namespace Intruder.Tools
 
 					Toolbutton( preferencesTool, 32 );
 
-					ToolGUI.PanelName( "Tools" );
+					UtilityGUI.PanelName( "Tools" );
 				}
 
 				// Inspector + Help Box
@@ -174,7 +174,7 @@ namespace Intruder.Tools
 					using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandWidth( true ), GUILayout.ExpandHeight( true ) ) )
 					{
 						activeTool.InternalInspectorGUI();
-						ToolGUI.PanelName( "Inspector" );
+						UtilityGUI.PanelName( "Inspector" );
 					}
 
 					// If tool has no help, don't draw
@@ -185,7 +185,7 @@ namespace Intruder.Tools
 						{
 							GUILayout.Label( activeTool.Description, EditorStyles.wordWrappedLabel );
 							GUILayout.FlexibleSpace();
-							ToolGUI.PanelName( "Help" );
+							UtilityGUI.PanelName( "Help" );
 						}
 					}
 				}
