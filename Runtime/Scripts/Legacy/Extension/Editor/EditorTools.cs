@@ -71,7 +71,7 @@ namespace Assets.IntruderMM.Editor
 		static EditorTools()
 		{
 			OnEnable();
-			SceneView.onSceneGUIDelegate += OnSceneGUI;
+			SceneView.duringSceneGui += OnSceneGUI;
 		}
 		/// <summary>Called on initialize</summary>
 		private static void OnEnable()

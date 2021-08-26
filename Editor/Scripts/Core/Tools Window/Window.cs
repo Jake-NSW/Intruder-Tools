@@ -45,7 +45,7 @@ namespace Intruder.Tools
 		{
 			Icons.Precache();
 			GrabTools();
-			activeTool = cachedTools[SavedIndex];
+			activeTool = cachedTools[Mathf.Clamp( SavedIndex, 0, cachedTools.Count )];
 		}
 
 		private void OnEnable()

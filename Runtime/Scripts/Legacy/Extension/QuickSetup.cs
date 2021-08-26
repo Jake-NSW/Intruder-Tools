@@ -15,7 +15,7 @@ namespace Assets.IntruderMM.Editor
 	public class QuickSetup
 	{
 #if UNITY_POST_PROCESSING_STACK_V2
-		[MenuItem("Intruder/Utilities/Create Post Processing")]
+		[MenuItem("Intruder Tools/Utilities/Create Post Processing")]
 		public static void CreatePostProcessing()
 		{
 			GameObject go = new GameObject("Post Processing Volume");
