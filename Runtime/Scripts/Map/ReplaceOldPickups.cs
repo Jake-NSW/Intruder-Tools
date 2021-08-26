@@ -12,7 +12,7 @@ public class ReplaceOldPickups : MonoBehaviour
 
 #if UNITY_EDITOR
 
-	[MenuItem("Intruder Tools/Legacy/Replace Old Pickup Proxies")]
+	[MenuItem("Intruder/Utilities/Replace Old Pickup Proxies")]
 	public static void ReplaceAll()
 	{
 

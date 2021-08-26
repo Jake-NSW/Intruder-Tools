@@ -17,6 +17,6 @@ public class TimedObjectDestructor : MonoBehaviour
 		{
 			transform.DetachChildren();
 		}
-		GameObject.Destroy(gameObject);
+		DestroyObject(gameObject);
 	}
 }

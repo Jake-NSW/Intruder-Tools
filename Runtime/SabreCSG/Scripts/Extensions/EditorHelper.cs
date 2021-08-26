@@ -41,6 +41,14 @@ namespace Sabresaurus.SabreCSG
 			}
 		}
 
+        /// <summary>
+        /// DO NOT USE - only here for compatibility with old third party plugins!
+        /// </summary>
+        public static bool SceneViewHasDelegate(SceneView.OnSceneFunc targetDelegate)
+        {
+            return HasDelegate(SceneView.onSceneGUIDelegate, targetDelegate);
+        }
+
         public enum SceneViewCamera { Top, Bottom, Left, Right, Front, Back, Other };
 
 		public static SceneViewCamera GetSceneViewCamera(SceneView sceneView)
@@ -388,7 +396,7 @@ namespace Sabresaurus.SabreCSG
                     }
                 }
                 // Finished duplicating, select all new objects
-               Selection.objects = newObjects;
+                Selection.objects = newObjects;
 			}
 
 			// Whether custom duplication took place and whether the Duplicate event should be consumed

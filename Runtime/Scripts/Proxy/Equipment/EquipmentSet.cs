@@ -10,6 +10,9 @@ public class EquipmentSet : ScriptableObject
 	public List<ThrowableItemVariant> throwableItems = new List<ThrowableItemVariant>();
 	public List<AmmoItemVariant> ammoItems = new List<AmmoItemVariant>();
 	public List<OtherItemProxy> otherItemProxies = new List<OtherItemProxy>();
+
+	private bool initialized = false;
+
 }
 
 [Serializable]
