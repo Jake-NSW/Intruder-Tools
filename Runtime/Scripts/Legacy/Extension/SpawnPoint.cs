@@ -32,13 +32,13 @@ namespace Assets.IntruderMM.Editor
 				{
 					if (transform.parent.name == "SpawnA") // If spawnpoint is for guards
 					{
-						gizmoMesh = (Mesh)AssetDatabase.LoadAssetAtPath("Assets/IntruderMM/Scripts/Extension/Models/mdl_Guard.fbx", typeof(Mesh));
+						gizmoMesh = (Mesh)AssetDatabase.LoadAssetAtPath(@"Assets\Intruder-Tools\Runtime\Scripts\Legacy\Extension\Models\mdl_Guard.fbx", typeof(Mesh));
 						meshColor = new Color(0.525f, 0.768f, 0.894f, 0.25f);
 						wireColor = new Color(0.525f, 0.768f, 0.894f, 0.025f);
 					}
 					else if (transform.parent.name == "SpawnB") // if spawnpoint is for intruder
 					{
-						gizmoMesh = (Mesh)AssetDatabase.LoadAssetAtPath("Assets/IntruderMM/Scripts/Extension/Models/mdl_Intruder.fbx", typeof(Mesh));
+						gizmoMesh = (Mesh)AssetDatabase.LoadAssetAtPath(@"Assets\Intruder-Tools\Runtime\Scripts\Legacy\Extension\Models\mdl_Intruder.fbx", typeof(Mesh));
 						meshColor = new Color(0.784f, 0.560f, 0.839f, 0.25f);
 						wireColor = new Color(0.784f, 0.560f, 0.839f, 0.025f);
 					}

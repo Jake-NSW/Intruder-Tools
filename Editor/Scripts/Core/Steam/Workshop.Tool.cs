@@ -18,7 +18,7 @@ namespace Intruder.Tools.Steamworks
 		private Texture2D cachedThumbnail;
 		private string cachedName;
 		private string cachedChangelog;
-		public DefaultAsset cachedAsset;
+		public string cachedDirectory;
 
 		private static bool uploadGroupFoldout = true;
 		private static bool statsGroupFoldout;
@@ -114,20 +114,26 @@ namespace Intruder.Tools.Steamworks
 			// Item Uploader
 			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
 			{
-				cachedAsset = EditorGUILayout.ObjectField( cachedAsset, typeof( DefaultAsset ), false ) as DefaultAsset;
+				var content = (string.IsNullOrEmpty( cachedDirectory )) ? new GUIContent( "No Package Selected" ) : new GUIContent( Path.GetFileName( cachedDirectory ) );
+				var style = new GUIStyle( EditorStyles.popup ) { fixedHeight = 0 };
 
-				if ( cachedAsset == null )
-					EditorGUILayout.HelpBox( "Need to have an object in the field above, in order to publish an item", MessageType.Error );
+				var rect = GUILayoutUtility.GetRect( content, style, GUILayout.Height( 20 ) );
+				if ( GUI.Button( rect, content, style ) )
+				{
+					var dropdown = new PackagesDropdown( new AdvancedDropdownState(), this );
+					dropdown.Show( rect );
+				}
+
+				if ( string.IsNullOrEmpty( cachedDirectory ) )
+					EditorGUILayout.HelpBox( "Need to have a selected package in the field above, in order to publish an item", MessageType.Error );
 
 				using ( new GUILayout.HorizontalScope( GUILayout.ExpandHeight( true ) ) )
 				{
-					EditorGUI.BeginDisabledGroup( cachedAsset == null );
+					EditorGUI.BeginDisabledGroup( string.IsNullOrEmpty( cachedDirectory ) );
 					{
-						if ( GUILayout.Button( "Upload" ) )
+						if ( GUILayout.Button( (activeItem == null) ? "Upload" : "Update Item", GUILayout.Height( 24 ) ) )
 						{
-							var path = Path.GetFullPath( AssetDatabase.GetAssetPath( cachedAsset ) );
-							Debug.Log( path );
-							Debug.Log( Path.GetFullPath( cachedThumbnailPath ) );
+							var path = Path.GetFullPath( cachedDirectory );
 
 							// UPLOAD ITEM LOGIC
 							if ( activeItem == null )
@@ -143,7 +149,7 @@ namespace Intruder.Tools.Steamworks
 					{
 						EditorGUI.BeginDisabledGroup( string.IsNullOrEmpty( cachedThumbnailPath ) );
 						{
-							if ( GUILayout.Button( "Update Thumbnail!" ) )
+							if ( GUILayout.Button( "Update Thumbnail!", GUILayout.Height( 24 ) ) )
 							{
 								Workshop.UpdateThumbnail( activeItem.Value, cachedThumbnailPath );
 							}
@@ -245,8 +251,72 @@ namespace Intruder.Tools.Steamworks
 				root.AddSeparator();
 
 				foreach ( var item in Workshop.ClientItems )
-				{
 					root.AddChild( new AdvancedDropdownItem( string.IsNullOrEmpty( item.Title ) ? "Untitled" : item.Title ) { id = Workshop.ClientItems.IndexOf( item ) } );
+
+				return root;
+			}
+		}
+
+		//-------------------------------------------------------------//
+		// IMGUI Dropdown for exported packages
+		//-------------------------------------------------------------//
+		private class PackagesDropdown : AdvancedDropdown
+		{
+			private WorkshopUploader activeUploader;
+
+			public PackagesDropdown( AdvancedDropdownState state, WorkshopUploader tool ) : base( state )
+			{
+				this.activeUploader = tool;
+				this.minimumSize = new Vector2( 0, 200 );
+			}
+
+			protected override void ItemSelected( AdvancedDropdownItem item )
+			{
+				var projectPath = Path.GetFullPath( Application.dataPath + "/../" );
+
+				switch ( item.id )
+				{
+					case 0:
+						activeUploader.cachedDirectory = null;
+						break;
+					// Item is map
+					case 1:
+						activeUploader.cachedDirectory = Path.GetFullPath( projectPath + "/Exports/Maps/" + item.name );
+						break;
+
+					// Item is Skin
+					case 2:
+						activeUploader.cachedDirectory = Path.GetFullPath( projectPath + "/Exports/Skins/" + item.name );
+						break;
+				}
+			}
+
+			protected override AdvancedDropdownItem BuildRoot()
+			{
+				var root = new AdvancedDropdownItem( $"Select a Package" );
+				var projectPath = Path.GetFullPath( Application.dataPath + "/../" );
+
+				root.AddChild( new AdvancedDropdownItem( "None" ) { id = 0 } );
+				root.AddSeparator();
+
+				if ( Directory.Exists( projectPath + "/Exports/Maps" ) )
+				{
+					var maps = new AdvancedDropdownItem( "Map Packages" );
+
+					foreach ( var item in Directory.GetDirectories( projectPath + $"/Exports/Maps" ) )
+						maps.AddChild( new AdvancedDropdownItem( Path.GetFileName( item ) ) { id = 1 } );
+
+					root.AddChild( maps );
+				}
+
+				if ( Directory.Exists( projectPath + "/Exports/Skins" ) )
+				{
+					var skins = new AdvancedDropdownItem( "Skin Packages" );
+
+					foreach ( var item in Directory.GetDirectories( projectPath + $"/Exports/Skins" ) )
+						skins.AddChild( new AdvancedDropdownItem( Path.GetFileName( item ) ) { id = 2 } );
+
+					root.AddChild( skins );
 				}
 
 				return root;

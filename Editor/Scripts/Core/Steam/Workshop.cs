@@ -22,7 +22,7 @@ namespace Intruder.Tools.Steamworks
 				return;
 			}
 
-			WorkshopUploader.current.cachedAsset = null;
+			WorkshopUploader.current.cachedDirectory = null;
 			WorkshopUploader.current.SelectItem( ClientItems.Where( e => e.Id == selectItem.Value.FileId ).FirstOrDefault() );
 		}
 
