@@ -96,20 +96,24 @@ namespace Intruder.Tools.Steamworks
 		private void UploadItemGUI()
 		{
 			// Item Meta
-			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
+			EditorGUI.BeginDisabledGroup( PublishProgress.progress > 0 );
 			{
-				ItemSelectorBarGUI();
-				GUILayout.Space( 4 );
-				using ( new GUILayout.HorizontalScope( GUILayout.ExpandHeight( true ) ) )
+				using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
 				{
-					ThumbnailPreviewGUI();
-					using ( new GUILayout.VerticalScope( GUILayout.ExpandHeight( true ) ) )
+					ItemSelectorBarGUI();
+					GUILayout.Space( 4 );
+					using ( new GUILayout.HorizontalScope( GUILayout.ExpandHeight( true ) ) )
 					{
-						UtilityGUI.GhostedTextField( ref cachedName, true, "Item Name", 12, GUILayout.Height( 26 ) );
-						UtilityGUI.GhostedTextArea( ref cachedChangelog, true, "Item Changelog", 12, GUILayout.Height( 127 ) );
+						ThumbnailPreviewGUI();
+						using ( new GUILayout.VerticalScope( GUILayout.ExpandHeight( true ) ) )
+						{
+							UtilityGUI.GhostedTextField( ref cachedName, true, "Item Name", 12, GUILayout.Height( 26 ) );
+							UtilityGUI.GhostedTextArea( ref cachedChangelog, true, "Item Changelog", 12, GUILayout.Height( 127 ) );
+						}
 					}
 				}
 			}
+			EditorGUI.EndDisabledGroup();
 
 			// Item Uploader
 			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
