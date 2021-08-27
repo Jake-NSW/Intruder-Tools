@@ -4,7 +4,7 @@ using UnityEditor;
 namespace Intruder.Tools
 {
 	[CustomTool( "Tools Info", Title = "Intruder Tools", Icon = "Assets/Intruder-Tools/Editor/Materials/Editor/Tools/help_icon.png", Priority = -500 )]
-	public class Info : Tool
+	public sealed class Info : Tool
 	{
 		private static bool headerInfoFoldout = true;
 		private static bool helpFoldout = true;

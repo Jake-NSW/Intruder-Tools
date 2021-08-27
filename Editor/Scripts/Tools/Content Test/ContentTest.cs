@@ -5,7 +5,7 @@ using Steamworks;
 
 namespace Intruder.Tools.Testing
 {
-	public class ContentTest
+	public sealed class ContentTest
 	{
 		public static Process LaunchIntruder( string launchArgs = "" )
 		{

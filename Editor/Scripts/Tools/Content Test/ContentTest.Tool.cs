@@ -11,7 +11,7 @@ using UnityEditor.IMGUI.Controls;
 namespace Intruder.Tools.Testing
 {
 	[CustomTool( "Content Tester", Title = "Content Testing", Description = "Test maps, skins and launch Intruder", Priority = 0 )]
-	public class ContentTestTool : Tool, IPackageDirectory
+	public sealed class ContentTestTool : Tool, IPackageDirectory
 	{
 		private bool quickCommandsFoldout = true;
 		private bool packageTestingFoldout = false;
@@ -104,11 +104,18 @@ namespace Intruder.Tools.Testing
 					dropdown.Show( rect );
 				}
 
-				if ( GUILayout.Button( "Test Package" ) )
+				if ( string.IsNullOrEmpty( cachedDirectory ) )
+					EditorGUILayout.HelpBox( "Need to have a selected package in the field above, in order to playtest an item", MessageType.Error );
+
+				EditorGUI.BeginDisabledGroup( string.IsNullOrEmpty( cachedDirectory ) );
 				{
-					// For now just do map laod crap
-					ContentTest.LaunchIntruder( ContentTest.LoadLevelArgs( cachedDirectory ) );
+					if ( GUILayout.Button( "Test Package", GUILayout.Height( 24 ) ) )
+					{
+						// For now just do map laod crap
+						ContentTest.LaunchIntruder( ContentTest.LoadLevelArgs( cachedDirectory ) );
+					}
 				}
+				EditorGUI.EndDisabledGroup();
 			}
 		}
 

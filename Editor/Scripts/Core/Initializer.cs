@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace Intruder.Tools
 {
-	public class Initializer
+	public sealed class Initializer
 	{
 		[InitializeOnLoadMethod]
 		private static void InstallCheck()

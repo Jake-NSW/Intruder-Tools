@@ -10,7 +10,7 @@ using Intruder.Tools.IMGUI;
 namespace Intruder.Tools.Steamworks
 {
 	[CustomTool( "Steam Uploader", Title = "Workshop Uploader", Description = "Use this tool to update your workshop items and update item thumbnails", Tooltip = "Upload your Content!", HasOptions = true, Priority = -100 )]
-	public class WorkshopUploader : Tool, IPackageDirectory
+	public sealed class WorkshopUploader : Tool, IPackageDirectory
 	{
 		public static WorkshopUploader current;
 		public static Item? activeItem;

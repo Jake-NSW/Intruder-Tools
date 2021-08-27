@@ -46,7 +46,8 @@ namespace Intruder.Tools
 				return;
 
 			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
-			{// Foldout group
+			{
+				// Foldout group
 				optionsFoldout = EditorGUILayout.BeginFoldoutHeaderGroup( optionsFoldout, $" {Title}", Styles.FoldoutSubTitle );
 				EditorGUILayout.EndFoldoutHeaderGroup();
 

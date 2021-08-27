@@ -3,7 +3,7 @@ using Steamworks;
 
 namespace Intruder.Tools
 {
-	public class Local
+	public static class Local
 	{
 		//-------------------------------------------------------------//
 		// Client Specific

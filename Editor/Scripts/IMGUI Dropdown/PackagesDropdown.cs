@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Intruder.Tools.IMGUI
 {
-	public class PackagesDropdown : AdvancedDropdown
+	public sealed class PackagesDropdown : AdvancedDropdown
 	{
 		private IPackageDirectory package;
 

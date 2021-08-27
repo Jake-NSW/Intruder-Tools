@@ -58,7 +58,7 @@ namespace Intruder.Tools
 		//-------------------------------------------------------------//
 		public static Tool activeTool;
 		private static Preferences preferencesTool = new Preferences();
-		private static List<Tool> cachedTools = new List<Tool>();
+		public static List<Tool> cachedTools = new List<Tool>();
 
 		private static void GrabTools()
 		{
@@ -209,29 +209,6 @@ namespace Intruder.Tools
 			if ( !isActiveTool )
 				GUI.color = new Color( 1, 1, 1, 1 );
 
-		}
-
-		//-------------------------------------------------------------//
-		// Preferences / Options
-		// - Created the preferences in this,
-		// - feels hacky but doing it so it can be a hardcoded tool
-		//-------------------------------------------------------------//
-		private class Preferences : Tool
-		{
-			public Preferences()
-			{
-				Name = "Options";
-				Title = "Tool Options";
-				Description = "Edit tool preferences";
-			}
-
-			public override void InspectorGUI()
-			{
-				foreach ( var item in cachedTools )
-				{
-					item.InternalOptionsGUI();
-				}
-			}
 		}
 	}
 }

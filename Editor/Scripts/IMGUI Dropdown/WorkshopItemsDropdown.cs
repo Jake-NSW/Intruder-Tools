@@ -6,7 +6,7 @@ using Intruder.Tools.Steamworks;
 
 namespace Intruder.Tools.IMGUI
 {
-	public class WorkshopItemsDropdown : AdvancedDropdown
+	public sealed class WorkshopItemsDropdown : AdvancedDropdown
 	{
 		private WorkshopUploader activeUploader;
 
