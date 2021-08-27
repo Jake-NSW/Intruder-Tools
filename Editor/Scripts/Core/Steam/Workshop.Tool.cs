@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using Intruder.Tools.IMGUI;
+using Intruder.Tools.IMGUI.Controls;
 
 namespace Intruder.Tools.Steamworks
 {

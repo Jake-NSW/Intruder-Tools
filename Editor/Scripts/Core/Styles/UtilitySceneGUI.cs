@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Intruder.Tools.Inspectors
+namespace Intruder.Tools.SceneGUI
 {
 	public static class UtilitySceneGUI
 	{

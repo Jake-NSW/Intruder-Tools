@@ -2,7 +2,7 @@ using System.IO;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
-namespace Intruder.Tools.IMGUI
+namespace Intruder.Tools.IMGUI.Controls
 {
 	public sealed class PackagesDropdown : AdvancedDropdown
 	{

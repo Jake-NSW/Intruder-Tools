@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Intruder.Tools.IMGUI;
 
 namespace Intruder.Tools
 {
@@ -96,12 +97,6 @@ namespace Intruder.Tools
 			cachedTools = cachedTools.OrderBy( e => e.Priority ).ToList();
 			activeTool = cachedTools[0];
 		}
-
-		//-------------------------------------------------------------//
-		// Options Creator
-		//-------------------------------------------------------------//
-
-
 		//-------------------------------------------------------------//
 		// GUI
 		//-------------------------------------------------------------//

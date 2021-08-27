@@ -6,7 +6,7 @@ namespace Intruder.Tools
 		{
 			Name = "Options";
 			Title = "Tool Options";
-			Description = "Edit tool preferences";
+			Description = "Edit tool preferences";			
 		}
 
 		public override void InspectorGUI()

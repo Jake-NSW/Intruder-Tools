@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Intruder.Tools
+namespace Intruder.Tools.IMGUI
 {
 	public static class UtilityGUI
 	{
@@ -28,6 +28,27 @@ namespace Intruder.Tools
 		public static void GhostedTextArea( ref string text, bool allowSpaces = true, string ghostedText = "GameObject", float fontSize = 12, params GUILayoutOption[] options )
 		{
 			text = GhostedTextArea( text, allowSpaces, ghostedText, fontSize, options );
+		}
+
+		public static void FoldoutPanel( ref bool foldoutValue, in string panelName = default( string ), System.Action onGUI = null, params GUILayoutOption[] options )
+		{
+			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
+			{
+				// Foldout group
+				foldoutValue = EditorGUILayout.BeginFoldoutHeaderGroup( foldoutValue, $" {panelName}", Styles.FoldoutSubTitle );
+				EditorGUILayout.EndFoldoutHeaderGroup();
+
+				if ( foldoutValue )
+					Panel( onGUI, options );
+			}
+		}
+
+		public static void Panel( System.Action onGUI = null, params GUILayoutOption[] options )
+		{
+			using ( new GUILayout.VerticalScope( Styles.Panel, options ) )
+			{
+				onGUI?.Invoke();
+			}
 		}
 
 		public static string GhostedTextArea( string text, bool allowSpaces = true, string ghostedText = "GameObject", float fontSize = 12, params GUILayoutOption[] options )

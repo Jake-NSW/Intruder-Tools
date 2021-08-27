@@ -4,7 +4,7 @@ using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using Intruder.Tools.Steamworks;
 
-namespace Intruder.Tools.IMGUI
+namespace Intruder.Tools.IMGUI.Controls
 {
 	public sealed class WorkshopItemsDropdown : AdvancedDropdown
 	{
