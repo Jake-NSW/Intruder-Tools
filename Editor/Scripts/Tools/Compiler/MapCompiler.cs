@@ -5,6 +5,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
@@ -28,6 +29,7 @@ namespace Intruder.Tools.Compiling
 		private static string[] buildTargets = new string[] { "Windows", "OSX", "Both" };
 		private static int buildTargetIndex;
 		private static bool cachedBeep;
+		private static bool cachedSanityCheck = true;
 		private static bool cachedLoadInGame;
 
 		public override void InspectorGUI()
@@ -90,7 +92,7 @@ namespace Intruder.Tools.Compiling
 				GUILayout.Label( "Map Options", Styles.SubTitle );
 				GUILayout.Space( 4 );
 				EditorGUILayout.Toggle( new GUIContent( "Export Post Effects", "Disable this if compile times are slow" ), true );
-				EditorGUILayout.Toggle( "Do Sanity Check", true );
+				cachedSanityCheck = EditorGUILayout.Toggle( "Do Sanity Check", cachedSanityCheck );
 
 				EditorGUILayout.Space();
 
@@ -124,7 +126,7 @@ namespace Intruder.Tools.Compiling
 							postBuild += ( path ) => ContentTest.LaunchIntruder( ContentTest.LoadLevelArgs( path ) );
 
 						GetBuildTarget( buildTargets[buildTargetIndex], out var target );
-						CompileLevel( UnityEngine.SceneManagement.SceneManager.GetSceneByPath( AssetDatabase.GetAssetPath( cachedMap ) ), target, postBuild );
+						CompileLevel( UnityEngine.SceneManagement.SceneManager.GetSceneByPath( AssetDatabase.GetAssetPath( cachedMap ) ), target, cachedSanityCheck, postBuild );
 					}
 				}
 				EditorGUI.EndDisabledGroup();
@@ -139,7 +141,7 @@ namespace Intruder.Tools.Compiling
 		public static void CompileAndLaunchOpenScene()
 		{
 			GetBuildTarget( SystemInfo.operatingSystemFamily.ToString(), out var buildTarget );
-			CompileLevel( EditorSceneManager.GetActiveScene(), buildTarget, ( path ) => ContentTest.LaunchIntruder( ContentTest.LoadLevelArgs( path ) ) );
+			CompileLevel( EditorSceneManager.GetActiveScene(), buildTarget, true, ( path ) => ContentTest.LaunchIntruder( ContentTest.LoadLevelArgs( path ) ) );
 		}
 
 		[MenuItem( "Intruder Tools/Maps/Compile Map", priority = 5 )]
@@ -152,11 +154,16 @@ namespace Intruder.Tools.Compiling
 		//-------------------------------------------------------------//
 		// Compiler
 		//-------------------------------------------------------------//
-		public static bool CompileLevel( Scene scene, BuildTarget[] buildTargets, Action<string> postCompile = null )
+		public static bool CompileLevel( Scene scene, BuildTarget[] buildTargets, bool sanityCheck = true, Action<string> postCompile = null )
 		{
+			var backupScenePath = scene.path;
+
 			// Ask the user if they want to save the scene, if not don't export!
 			if ( !EditorSceneManager.SaveModifiedScenesIfUserWantsTo( new Scene[] { scene } ) )
 				return false;
+
+			if ( sanityCheck )
+				DoSanityCheck( scene );
 
 			// Copies the scene to Level01 cause of intruder stupid shit
 			EditorSceneManager.SaveScene( scene, "Assets/Level1.unity", true );
@@ -226,6 +233,29 @@ namespace Intruder.Tools.Compiling
 				default:
 					target = null;
 					break;
+			}
+		}
+
+		public static void DoSanityCheck( Scene scene )
+		{
+			var gameObjects = scene.GetRootGameObjects();
+
+			foreach ( var gameObject in gameObjects )
+			{
+				if ( gameObject.TryGetComponent<Camera>( out var camera ) && gameObject.GetComponent<ObserveCamProxy>() == null )
+				{
+					if ( camera.targetTexture != null )
+					{
+						Debug.LogWarning( $"Disabling Camera - {camera.name}" );
+						camera.enabled = false;
+					}
+				}
+
+				if ( gameObject.TryGetComponent<AudioListener>( out var listener ) )
+				{
+					Debug.LogWarning( $"Disabling AudioListener - {listener.name}" );
+					listener.enabled = false;
+				}
 			}
 		}
 	}
