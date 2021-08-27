@@ -2,8 +2,9 @@ using Steamworks;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
+using Intruder.Tools.Steamworks;
 
-namespace Intruder.Tools.Steamworks
+namespace Intruder.Tools.IMGUI
 {
 	public class WorkshopItemsDropdown : AdvancedDropdown
 	{

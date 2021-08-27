@@ -5,14 +5,17 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using Steamworks;
+using Intruder.Tools.IMGUI;
+using UnityEditor.IMGUI.Controls;
 
 namespace Intruder.Tools.Testing
 {
 	[CustomTool( "Content Tester", Title = "Content Testing", Description = "Test maps, skins and launch Intruder", Priority = 0 )]
-	public class ContentTestTool : Tool
+	public class ContentTestTool : Tool, IPackageDirectory
 	{
 		private bool quickCommandsFoldout = true;
-		private bool mapTestingFoldout = false;
+		private bool packageTestingFoldout = false;
+		private string cachedDirectory;
 
 		public override void InspectorGUI()
 		{
@@ -41,11 +44,11 @@ namespace Intruder.Tools.Testing
 			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
 			{
 				// Foldout group
-				mapTestingFoldout = EditorGUILayout.BeginFoldoutHeaderGroup( mapTestingFoldout, " Map Testing", Styles.FoldoutSubTitle );
+				packageTestingFoldout = EditorGUILayout.BeginFoldoutHeaderGroup( packageTestingFoldout, " Package Testing", Styles.FoldoutSubTitle );
 				EditorGUILayout.EndFoldoutHeaderGroup();
 
-				if ( mapTestingFoldout )
-					MapTestingGUI();
+				if ( packageTestingFoldout )
+					PackageTestingGUI();
 			}
 		}
 
@@ -85,11 +88,43 @@ namespace Intruder.Tools.Testing
 		}
 
 		//-------------------------------------------------------------//
-		// Map Testing GUI
+		// Packing Testing GUI
 		//-------------------------------------------------------------//
-		private void MapTestingGUI()
+		private void PackageTestingGUI()
 		{
-			GUILayout.Label( "Awesome" );
+			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
+			{
+				var content = (string.IsNullOrEmpty( cachedDirectory )) ? new GUIContent( "No Package Selected" ) : new GUIContent( Path.GetFileName( cachedDirectory ) );
+				var style = new GUIStyle( EditorStyles.popup ) { fixedHeight = 0 };
+
+				var rect = GUILayoutUtility.GetRect( content, style, GUILayout.Height( 20 ) );
+				if ( GUI.Button( rect, content, style ) )
+				{
+					var dropdown = new PackagesDropdown( new AdvancedDropdownState(), this );
+					dropdown.Show( rect );
+				}
+
+				if ( GUILayout.Button( "Test Package" ) )
+				{
+					// For now just do map laod crap
+					ContentTest.LaunchIntruder( ContentTest.LoadLevelArgs( cachedDirectory ) );
+				}
+			}
+		}
+
+		void IPackageDirectory.OnNothingSelected()
+		{
+			cachedDirectory = null;
+		}
+
+		void IPackageDirectory.OnSkinSelected( string path )
+		{
+			cachedDirectory = path;
+		}
+
+		void IPackageDirectory.OnMapSelected( string path )
+		{
+			cachedDirectory = path;
 		}
 	}
 }

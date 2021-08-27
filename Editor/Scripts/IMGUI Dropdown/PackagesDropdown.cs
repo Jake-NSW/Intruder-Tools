@@ -2,15 +2,15 @@ using System.IO;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
-namespace Intruder.Tools.Steamworks
+namespace Intruder.Tools.IMGUI
 {
 	public class PackagesDropdown : AdvancedDropdown
 	{
-		private WorkshopUploader activeUploader;
+		private IPackageDirectory package;
 
-		public PackagesDropdown( AdvancedDropdownState state, WorkshopUploader tool ) : base( state )
+		public PackagesDropdown( AdvancedDropdownState state, IPackageDirectory package ) : base( state )
 		{
-			this.activeUploader = tool;
+			this.package = package;
 			this.minimumSize = new Vector2( 0, 200 );
 		}
 
@@ -21,16 +21,16 @@ namespace Intruder.Tools.Steamworks
 			switch ( item.id )
 			{
 				case 0:
-					activeUploader.cachedDirectory = null;
+					package.OnNothingSelected();
 					break;
 				// Item is map
 				case 1:
-					activeUploader.cachedDirectory = Path.GetFullPath( projectPath + "/Exports/Maps/" + item.name );
+					package.OnMapSelected( Path.GetFullPath( projectPath + "/Exports/Maps/" + item.name ) );
 					break;
 
 				// Item is Skin
 				case 2:
-					activeUploader.cachedDirectory = Path.GetFullPath( projectPath + "/Exports/Skins/" + item.name );
+					package.OnSkinSelected( Path.GetFullPath( projectPath + "/Exports/Skins/" + item.name ) );
 					break;
 			}
 		}

@@ -5,20 +5,21 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
+using Intruder.Tools.IMGUI;
 
 namespace Intruder.Tools.Steamworks
 {
 	[CustomTool( "Steam Uploader", Title = "Workshop Uploader", Description = "Use this tool to update your workshop items and update item thumbnails", Tooltip = "Upload your Content!", HasOptions = true, Priority = -100 )]
-	public class WorkshopUploader : Tool
+	public class WorkshopUploader : Tool, IPackageDirectory
 	{
 		public static WorkshopUploader current;
 		public static Item? activeItem;
+		public string cachedDirectory;
 
 		private string cachedThumbnailPath;
 		private Texture2D cachedThumbnail;
 		private string cachedName;
 		private string cachedChangelog;
-		public string cachedDirectory;
 
 		private static bool uploadGroupFoldout = true;
 		private static bool statsGroupFoldout;
@@ -311,6 +312,21 @@ namespace Intruder.Tools.Steamworks
 		{
 			cachedThumbnail = Window.Icons.DefaultThumbnail;
 			cachedThumbnailPath = AssetDatabase.GetAssetPath( Window.Icons.DefaultThumbnail );
+		}
+
+		void IPackageDirectory.OnNothingSelected()
+		{
+			cachedDirectory = null;
+		}
+
+		void IPackageDirectory.OnSkinSelected( string path )
+		{
+			cachedDirectory = path;
+		}
+
+		void IPackageDirectory.OnMapSelected( string path )
+		{
+			cachedDirectory = path;
 		}
 	}
 }
