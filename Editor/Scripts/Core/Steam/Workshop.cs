@@ -26,21 +26,6 @@ namespace Intruder.Tools.Steamworks
 			WorkshopUploader.current.SelectItem( ClientItems.Where( e => e.Id == selectItem.Value.FileId ).FirstOrDefault() );
 		}
 
-		//-------------------------------------------------------------//
-		// Workshop Uploader Progress
-		//-------------------------------------------------------------//
-		public class PublishProgress : IProgress<float>
-		{
-			public static float progress = 0;
-
-			public void Report( float value )
-			{
-				if ( progress >= value ) return;
-				Debug.Log( progress );
-				progress = value;
-			}
-		}
-
 		public static void PublishNewItem( string content, UgcType type, string name, string changeLog, string thumbnailPath )
 		{
 			switch ( type )

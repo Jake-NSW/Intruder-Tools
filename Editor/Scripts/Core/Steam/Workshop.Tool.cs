@@ -114,6 +114,14 @@ namespace Intruder.Tools.Steamworks
 			// Item Uploader
 			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
 			{
+				// Publish progress
+				if ( PublishProgress.progress > 0 )
+				{
+					var prog = PublishProgress.progress;
+					EditorGUI.ProgressBar( EditorGUILayout.GetControlRect( GUILayout.Height( 32 ) ), prog, $"Upload Progress - {prog * 100}%" );
+					return;
+				}
+
 				var content = (string.IsNullOrEmpty( cachedDirectory )) ? new GUIContent( "No Package Selected" ) : new GUIContent( Path.GetFileName( cachedDirectory ) );
 				var style = new GUIStyle( EditorStyles.popup ) { fixedHeight = 0 };
 
@@ -213,114 +221,6 @@ namespace Intruder.Tools.Steamworks
 			cachedThumbnailPath = path;
 			cachedThumbnail = new Texture2D( 4, 4 );
 			cachedThumbnail.LoadImage( File.ReadAllBytes( path ) );
-		}
-
-		//-------------------------------------------------------------//
-		// Cool IMGUI Dropdown for Workshop Items
-		//-------------------------------------------------------------//
-		private class WorkshopItemsDropdown : AdvancedDropdown
-		{
-			private WorkshopUploader activeUploader;
-
-			public WorkshopItemsDropdown( AdvancedDropdownState state, WorkshopUploader tool ) : base( state )
-			{
-				this.activeUploader = tool;
-				this.minimumSize = new Vector2( 0, 200 );
-			}
-
-			protected override void ItemSelected( AdvancedDropdownItem item )
-			{
-				if ( !item.enabled )
-					return;
-
-				if ( item.id != -1 )
-				{
-					var workshopItem = Workshop.ClientItems[item.id];
-					activeUploader.SelectItem( workshopItem );
-				}
-				else
-				{
-					activeUploader.RemoveActiveItem();
-				}
-			}
-
-			protected override AdvancedDropdownItem BuildRoot()
-			{
-				var root = new AdvancedDropdownItem( $"{SteamClient.Name} Workshop Items" );
-				root.AddChild( new AdvancedDropdownItem( "New Workshop Item" ) { id = -1, icon = (Texture2D)EditorGUIUtility.IconContent( "d_CreateAddNew" ).image } );
-				root.AddSeparator();
-
-				foreach ( var item in Workshop.ClientItems )
-					root.AddChild( new AdvancedDropdownItem( string.IsNullOrEmpty( item.Title ) ? "Untitled" : item.Title ) { id = Workshop.ClientItems.IndexOf( item ) } );
-
-				return root;
-			}
-		}
-
-		//-------------------------------------------------------------//
-		// IMGUI Dropdown for exported packages
-		//-------------------------------------------------------------//
-		private class PackagesDropdown : AdvancedDropdown
-		{
-			private WorkshopUploader activeUploader;
-
-			public PackagesDropdown( AdvancedDropdownState state, WorkshopUploader tool ) : base( state )
-			{
-				this.activeUploader = tool;
-				this.minimumSize = new Vector2( 0, 200 );
-			}
-
-			protected override void ItemSelected( AdvancedDropdownItem item )
-			{
-				var projectPath = Path.GetFullPath( Application.dataPath + "/../" );
-
-				switch ( item.id )
-				{
-					case 0:
-						activeUploader.cachedDirectory = null;
-						break;
-					// Item is map
-					case 1:
-						activeUploader.cachedDirectory = Path.GetFullPath( projectPath + "/Exports/Maps/" + item.name );
-						break;
-
-					// Item is Skin
-					case 2:
-						activeUploader.cachedDirectory = Path.GetFullPath( projectPath + "/Exports/Skins/" + item.name );
-						break;
-				}
-			}
-
-			protected override AdvancedDropdownItem BuildRoot()
-			{
-				var root = new AdvancedDropdownItem( $"Select a Package" );
-				var projectPath = Path.GetFullPath( Application.dataPath + "/../" );
-
-				root.AddChild( new AdvancedDropdownItem( "None" ) { id = 0 } );
-				root.AddSeparator();
-
-				if ( Directory.Exists( projectPath + "/Exports/Maps" ) )
-				{
-					var maps = new AdvancedDropdownItem( "Map Packages" );
-
-					foreach ( var item in Directory.GetDirectories( projectPath + $"/Exports/Maps" ) )
-						maps.AddChild( new AdvancedDropdownItem( Path.GetFileName( item ) ) { id = 1 } );
-
-					root.AddChild( maps );
-				}
-
-				if ( Directory.Exists( projectPath + "/Exports/Skins" ) )
-				{
-					var skins = new AdvancedDropdownItem( "Skin Packages" );
-
-					foreach ( var item in Directory.GetDirectories( projectPath + $"/Exports/Skins" ) )
-						skins.AddChild( new AdvancedDropdownItem( Path.GetFileName( item ) ) { id = 2 } );
-
-					root.AddChild( skins );
-				}
-
-				return root;
-			}
 		}
 
 		//-------------------------------------------------------------//

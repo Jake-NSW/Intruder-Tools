@@ -11,6 +11,7 @@ namespace Intruder.Tools.Steamworks
 			var item = await Item.GetAsync( publishResult.FileId );
 			await Task.WhenAll( item.Value.Subscribe(), item.Value.Vote( true ), item.Value.AddFavorite() );
 			Workshop.RefreshClientItems( publishResult );
+			PublishProgress.progress = 0;
 
 			if ( !UnityEditor.EditorUtility.DisplayDialog( "Upload Complete!", finishMessage, "Okay", "View on Workshop" ) )
 			{
