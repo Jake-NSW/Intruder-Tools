@@ -15,7 +15,16 @@ namespace Intruder.Tools.Steamworks
 		[InitializeOnLoadMethod]
 		private static void Initialize()
 		{
-			SteamClient.Init( Global.AppId );
+			try
+			{
+				SteamClient.Init( Global.AppId );
+			}
+			catch ( Exception e )
+			{
+				EditorUtility.DisplayDialog( "Steam not Connected", e.Message, "Okay" );
+				Debug.LogError( "Steam Client not valid - " + e );
+				return;
+			}
 
 			if ( SteamClient.IsValid )
 			{
@@ -32,8 +41,6 @@ namespace Intruder.Tools.Steamworks
 						WorkshopUploader.current.GetItemThumbnail( WorkshopUploader.activeItem.Value );
 				};
 			}
-			else
-				Debug.LogError( "Steam Client not valid" );
 		}
 
 		//-------------------------------------------------------------//

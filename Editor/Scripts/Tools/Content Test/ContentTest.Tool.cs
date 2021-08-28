@@ -20,6 +20,13 @@ namespace Intruder.Tools.Testing
 
 		public override void InspectorGUI()
 		{
+			// If steam is not connected.. Don't draw GUI
+			if ( !SteamClient.IsValid )
+			{
+				GUILayout.Label( "Steam not connected!", Styles.SubTitle );
+				return;
+			}
+
 			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
 			{
 				GUILayout.Label( "Install Path:" );

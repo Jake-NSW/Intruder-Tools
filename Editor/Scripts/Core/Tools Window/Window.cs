@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Intruder.Tools.IMGUI;
+using Steamworks;
 
 namespace Intruder.Tools
 {
@@ -124,7 +125,11 @@ namespace Intruder.Tools
 			{
 				GUILayout.Label( Icons.IntruderBanner, Styles.Image, GUILayout.ExpandHeight( true ), GUILayout.Height( 64 ), GUILayout.Width( 220 ) );
 				GUILayout.FlexibleSpace();
-				GUILayout.Label( $"<size=14><b>{Local.Username}</b></size>\nFollowers: {Local.Followers}", Styles.Text, GUILayout.ExpandHeight( true ) );
+				GUILayout.Label( SteamClient.IsValid ? $"<size=14><b>{Local.Username}</b></size>\nFollowers: {Local.Followers}" : $"<size=14><b>No Name</b></size>\nSteam not Connected", Styles.Text, GUILayout.ExpandHeight( true ) );
+
+				if ( !SteamClient.IsValid )
+					return;
+
 				if ( GUILayout.Button( Local.Avatar, GUILayout.Height( 64 ), GUILayout.Width( 64 ) ) )
 				{
 					Application.OpenURL( $"steam://openurl/https://steamcommunity.com/profiles/{Local.SteamId}/myworkshopfiles/?appid=518150" );
