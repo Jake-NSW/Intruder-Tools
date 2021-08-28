@@ -30,16 +30,19 @@ namespace Intruder.Tools.IMGUI
 			text = GhostedTextArea( text, allowSpaces, ghostedText, fontSize, options );
 		}
 
-		public static void FoldoutPanel( ref bool foldoutValue, in string panelName = default( string ), System.Action onGUI = null, params GUILayoutOption[] options )
+		public static void FoldoutPanel( ref bool foldoutValue, in string panelName = default( string ), params System.Action[] onGUI )
 		{
 			using ( new GUILayout.VerticalScope( Styles.Panel, GUILayout.ExpandHeight( true ) ) )
 			{
-				// Foldout group
-				foldoutValue = EditorGUILayout.BeginFoldoutHeaderGroup( foldoutValue, $" {panelName}", Styles.FoldoutSubTitle );
-				EditorGUILayout.EndFoldoutHeaderGroup();
+				foldoutValue = EditorGUILayout.Foldout( foldoutValue, $" {panelName}", true, Styles.FoldoutSubTitle );
 
 				if ( foldoutValue )
-					Panel( onGUI, options );
+				{
+					foreach ( var item in onGUI )
+					{
+						Panel( item );
+					}
+				}
 			}
 		}
 

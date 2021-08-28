@@ -65,10 +65,13 @@ namespace Intruder.Tools.Steamworks
 
 		public override void OptionsGUI()
 		{
-			if ( GUILayout.Button( "Refresh Workshop Items" ) )
+			UtilityGUI.Panel( () =>
 			{
-				Workshop.RefreshClientItems();
-			}
+				if ( GUILayout.Button( "Refresh Workshop Items" ) )
+				{
+					Workshop.RefreshClientItems();
+				}
+			} );
 		}
 
 		//-------------------------------------------------------------//
