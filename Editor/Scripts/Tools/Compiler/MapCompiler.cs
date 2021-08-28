@@ -5,7 +5,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
@@ -177,9 +176,6 @@ namespace Intruder.Tools.Compiling
 			// For each target build, build
 			foreach ( var target in buildTargets )
 			{
-				// Clear asset bundles so it doesnt build with map
-				// IntruderUtility.ClearAllAssetBundleNames();
-
 				level.assetBundleName = "map.ilf" + (target == BuildTarget.StandaloneWindows64 ? "w" : "m");
 				var bundle = BuildPipeline.BuildAssetBundles( $"Exports/Maps/{scene.name}/", BuildAssetBundleOptions.ChunkBasedCompression, target );
 
@@ -188,9 +184,6 @@ namespace Intruder.Tools.Compiling
 					EditorUtility.DisplayDialog( "ERROR", $"Map asset bundle compile failed. {target.ToString()}", "Okay" );
 					Debug.LogError( "Compile Failed" );
 				}
-
-				// Clear asset bundles again so they cant stuff up next export somehow
-				// IntruderUtility.ClearAllAssetBundleNames();
 			}
 
 			// Delete crap files
