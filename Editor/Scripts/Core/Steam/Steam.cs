@@ -33,6 +33,14 @@ namespace Intruder.Tools.Steamworks
 				// I have to do this? Or else it'll just disappear? why why why???
 				// You'd think i would have to do this on every other GUI image...
 				// but no only on the avatar cause unity doesnt like steam images?!?
+				EditorSceneManager.sceneUnloaded += ( e ) =>
+				{
+					GetAndCacheAvatar();
+
+					if ( WorkshopUploader.activeItem.HasValue )
+						WorkshopUploader.current.GetItemThumbnail( WorkshopUploader.activeItem.Value );
+				};
+
 				EditorSceneManager.sceneOpened += ( e, d ) =>
 				{
 					GetAndCacheAvatar();
