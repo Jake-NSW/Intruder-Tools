@@ -36,7 +36,7 @@ namespace Intruder.Tools.IMGUI
 			{
 				foldoutValue = EditorGUILayout.Foldout( foldoutValue, $" {panelName}", true, Styles.FoldoutSubTitle );
 
-				if ( foldoutValue )
+				if ( foldoutValue && onGUI != null )
 				{
 					foreach ( var item in onGUI )
 					{
