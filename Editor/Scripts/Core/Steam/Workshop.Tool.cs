@@ -205,7 +205,7 @@ namespace Intruder.Tools.Steamworks
 		{
 			using ( new GUILayout.VerticalScope( GUILayout.MaxHeight( 144 ), GUILayout.Width( 128 ) ) )
 			{
-				GUILayout.Label( new GUIContent( cachedThumbnail, (cachedThumbnailPath != null) ? Path.GetFullPath( cachedThumbnailPath ) : null ), GUI.skin.box, GUILayout.Height( 128 ), GUILayout.Width( 128 ) );
+				GUILayout.Label( new GUIContent( cachedThumbnail, (string.IsNullOrEmpty( cachedThumbnailPath )) ? Path.GetFullPath( cachedThumbnailPath ) : null ), GUI.skin.box, GUILayout.Height( 128 ), GUILayout.Width( 128 ) );
 				if ( GUILayout.Button( "Change Thumbnail", GUILayout.ExpandHeight( true ), GUILayout.ExpandWidth( true ) ) )
 				{
 					CacheThumbnail();
